@@ -1,4 +1,4 @@
-package es.nkmem.da.movefreq.packethooks;
+package es.nkmem.da.movefreq.hooks;
 
 import com.comphenix.packetwrapper.WrapperPlayClientPositionLook;
 import com.comphenix.protocol.PacketType;

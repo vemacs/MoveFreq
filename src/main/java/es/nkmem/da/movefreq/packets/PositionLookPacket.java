@@ -1,7 +1,6 @@
 package es.nkmem.da.movefreq.packets;
 
 import com.comphenix.packetwrapper.WrapperPlayClientPositionLook;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 

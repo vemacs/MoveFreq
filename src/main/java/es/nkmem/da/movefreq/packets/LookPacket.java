@@ -26,4 +26,3 @@ public class LookPacket {
         wrapper.setOnGround(onGround);
     }
 }
-
