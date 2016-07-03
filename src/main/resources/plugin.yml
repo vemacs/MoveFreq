@@ -1,0 +1,5 @@
+name: MoveFreq
+author: vemacs
+version: ${project.version}-${git.branch}-${git.commit.id.abbrev}
+main: es.nkmem.da.movefreq.MoveFreqPlugin
+depend: [ProtocolLib]
