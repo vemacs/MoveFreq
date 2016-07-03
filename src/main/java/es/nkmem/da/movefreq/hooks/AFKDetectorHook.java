@@ -17,6 +17,7 @@ import es.nkmem.da.movefreq.packets.PositionLookPacket;
 import es.nkmem.da.movefreq.packets.PositionPacket;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -59,6 +60,8 @@ public class AFKDetectorHook {
     }
 
     public void hook() {
+        Bukkit.getOnlinePlayers().forEach(this::updateLast);
+
         plugin.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler(priority = EventPriority.LOWEST)
             public void onPlayerChat(AsyncPlayerChatEvent event) {
