@@ -1,19 +1,20 @@
 package es.nkmem.da.movefreq.packethooks;
 
-        import com.comphenix.packetwrapper.WrapperPlayClientPositionLook;
-        import com.comphenix.protocol.PacketType;
-        import com.comphenix.protocol.events.PacketAdapter;
-        import com.comphenix.protocol.events.PacketEvent;
-        import es.nkmem.da.movefreq.MoveFreqPlugin;
-        import lombok.Data;
-        import lombok.RequiredArgsConstructor;
-        import org.bukkit.entity.Player;
-        import org.bukkit.event.EventHandler;
-        import org.bukkit.event.Listener;
-        import org.bukkit.event.player.PlayerQuitEvent;
+import com.comphenix.packetwrapper.WrapperPlayClientPositionLook;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
+import es.nkmem.da.movefreq.MoveFreqPlugin;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-        import java.util.UUID;
-        import java.util.concurrent.ConcurrentHashMap;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 public class PositionLookHook {
@@ -45,7 +46,7 @@ public class PositionLookHook {
         }
 
         public boolean isExpired() {
-            return (System.currentTimeMillis() - initTime) > 75;
+            return (System.currentTimeMillis() - initTime) > 50;
         }
 
         public void apply(WrapperPlayClientPositionLook wrapper) {
@@ -59,12 +60,12 @@ public class PositionLookHook {
         }
     }
 
-    int suppressed = 0;
-    int total = 0;
+    long suppressed = 0;
+    long total = 0;
 
     public void hook() {
         PacketAdapter.AdapterParameteters params = new PacketAdapter.AdapterParameteters().clientSide()
-                .types(PacketType.Play.Client.POSITION_LOOK).plugin(plugin);
+                .types(PacketType.Play.Client.POSITION_LOOK).listenerPriority(ListenerPriority.LOWEST).plugin(plugin);
         PacketAdapter adapter = new PacketAdapter(params) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
@@ -75,7 +76,7 @@ public class PositionLookHook {
                 PositionLookPacket last = cache.get(uuid);
                 if (last == null || last.isExpired()) {
                     cache.put(uuid, new PositionLookPacket(wrapper));
-                } else {
+                } else if (p.getVelocity().length() < 0.0785) {
                     suppressed++;
                     last.apply(wrapper);
                 }
@@ -90,7 +91,7 @@ public class PositionLookHook {
             }
         }, plugin);
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            plugin.getLogger().info("Suppressed percentage: " + (suppressed * 100) / total);
+            plugin.getLogger().info("Suppressed " + (suppressed * 100) / total + "% of " + total);
         }, 100, 100);
     }
 }
