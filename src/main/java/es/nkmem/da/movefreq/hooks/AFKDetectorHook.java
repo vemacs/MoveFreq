@@ -102,7 +102,7 @@ public class AFKDetectorHook {
                     data.setPositionLook(packet);
                     updateLast(p);
                 } else if (isAFK(p)) {
-                    plugin.getLogger().info("AFK and cancelling posLook for " + p.getName());
+                    // plugin.getLogger().info("AFK and cancelling posLook for " + p.getName());
                     event.setCancelled(true);
                 }
             }
@@ -122,7 +122,7 @@ public class AFKDetectorHook {
                     data.setLook(packet);
                     updateLast(p);
                 } else if (isAFK(p)) {
-                    plugin.getLogger().info("AFK and cancelling look for " + p.getName());
+                    // plugin.getLogger().info("AFK and cancelling look for " + p.getName());
                     event.setCancelled(true);
                 }
             }
@@ -142,7 +142,7 @@ public class AFKDetectorHook {
                     data.setPosition(packet);
                     updateLast(p);
                 } else if (isAFK(p)) {
-                    plugin.getLogger().info("AFK and cancelling pos for " + p.getName());
+                    // plugin.getLogger().info("AFK and cancelling pos for " + p.getName());
                     event.setCancelled(true);
                 }
             }
