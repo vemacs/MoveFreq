@@ -22,10 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -71,6 +69,16 @@ public class AFKDetectorHook {
             @EventHandler(priority = EventPriority.LOWEST)
             public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
                 updateLast(event.getPlayer());
+            }
+
+            @EventHandler(priority = EventPriority.LOWEST)
+            public void onPlayerInteract(PlayerInteractEvent event) {
+                updateLast(event.getPlayer());
+            }
+
+            @EventHandler
+            public void onInventoryClick(InventoryClickEvent event) {
+                updateLast((Player) event.getWhoClicked());
             }
 
             @EventHandler(priority = EventPriority.LOWEST)
