@@ -147,5 +147,13 @@ public class AFKDetectorHook {
                 }
             }
         });
+
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            int afk = 0;
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (isAFK(p)) afk++;
+           }
+            plugin.getLogger().info("Number of AFK players: " + afk);
+        }, 600, 600);
     }
 }
