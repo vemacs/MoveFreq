@@ -31,6 +31,7 @@ public class PositionLookHook {
         PacketAdapter adapter = new PacketAdapter(params) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
+                if (event.isCancelled()) return;
                 Player p = event.getPlayer();
                 UUID uuid = p.getUniqueId();
                 WrapperPlayClientPositionLook wrapper = new WrapperPlayClientPositionLook(event.getPacket());
