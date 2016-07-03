@@ -6,7 +6,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import es.nkmem.da.movefreq.MoveFreqPlugin;
-import lombok.Data;
+import es.nkmem.da.movefreq.packets.PositionLookPacket;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,51 +22,12 @@ public class PositionLookHook {
     private final MoveFreqPlugin plugin;
     private Map<UUID, PositionLookPacket> cache = new ConcurrentHashMap<>();
 
-    @Data
-    public class PositionLookPacket {
-        private long initTime;
-
-        private double x;
-        private double y;
-        private double z;
-
-        private float yaw;
-        private float pitch;
-
-        private boolean onGround;
-
-        public PositionLookPacket(WrapperPlayClientPositionLook wrapper) {
-            this.initTime = System.currentTimeMillis();
-            this.x = wrapper.getX();
-            this.y = wrapper.getY();
-            this.z = wrapper.getZ();
-
-            this.yaw = wrapper.getYaw();
-            this.pitch = wrapper.getPitch();
-            this.onGround = wrapper.getOnGround();
-        }
-
-        public boolean isExpired() {
-            return (System.currentTimeMillis() - initTime) > 50;
-        }
-
-        public void apply(WrapperPlayClientPositionLook wrapper) {
-            wrapper.setX(x);
-            wrapper.setY(y);
-            wrapper.setZ(z);
-
-            wrapper.setYaw(yaw);
-            wrapper.setPitch(pitch);
-            wrapper.setOnGround(onGround);
-        }
-    }
-
     long suppressed = 0;
     long total = 0;
 
     public void hook() {
         PacketAdapter.AdapterParameteters params = new PacketAdapter.AdapterParameteters().clientSide()
-                .types(PacketType.Play.Client.POSITION_LOOK).listenerPriority(ListenerPriority.LOWEST).plugin(plugin);
+                .types(PacketType.Play.Client.POSITION_LOOK).listenerPriority(ListenerPriority.LOW).plugin(plugin);
         PacketAdapter adapter = new PacketAdapter(params) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
