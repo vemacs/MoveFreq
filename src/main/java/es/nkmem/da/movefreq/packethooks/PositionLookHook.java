@@ -13,13 +13,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 public class PositionLookHook {
     private final MoveFreqPlugin plugin;
-    private ConcurrentHashMap<UUID, PositionLookPacket> cache = new ConcurrentHashMap<>();
+    private Map<UUID, PositionLookPacket> cache = new ConcurrentHashMap<>();
 
     @Data
     public class PositionLookPacket {
